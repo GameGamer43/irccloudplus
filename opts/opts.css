@@ -1,0 +1,16 @@
+body {
+	background-color: #F1F1F1
+}
+#content {
+	margin: 75px;
+}
+
+table tr {
+	font-family: Helvetica, sans-serif;
+	font-size: 14px;
+	font-weight: bold;
+}
+
+table tr input[type=text] {
+	width: 500px;
+}

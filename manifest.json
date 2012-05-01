@@ -1,0 +1,29 @@
+{
+	"name": "irccloud+",
+ 	"version": "0.1",
+ 	"manifest_version": 2,
+ 	"description": "Irccloud companion and helper",
+ 	"browser_action": {
+   		//"default_icon": "icon.png"
+ 	},
+	/*"background": {
+		"page": "background.html",
+		"script": ["background.js"]
+	},*/
+	"options_page": "opts/options.html",
+ 	"permissions": [
+   		"http://*/*",
+		"https://*/*",
+		"tabs",
+		"background",
+		//"cookies",
+		"notifications"
+ 	],
+	"content_scripts": [
+		{
+			"matches": ["https://irccloud.com/"],
+			"run_at": "document_idle",
+			"js": ["assets/jquery.min.js", "inject/js/background.js"]
+		}
+	]
+}
