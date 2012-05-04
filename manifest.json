@@ -6,10 +6,10 @@
  	"browser_action": {
    		//"default_icon": "icon.png"
  	},
-	/*"background": {
-		"page": "background.html",
-		"script": ["background.js"]
-	},*/
+	"background": {
+		"page": "background/background.html",
+		"script": ["background/background.js"]
+	},
 	"options_page": "opts/options.html",
  	"permissions": [
    		"http://*/*",
@@ -23,7 +23,7 @@
 		{
 			"matches": ["https://irccloud.com/"],
 			"run_at": "document_idle",
-			"js": ["assets/jquery.min.js", "inject/js/background.js"]
+			"js": ["assets/js/jquery.min.js", "inject/js/background.js"]
 		}
 	]
 }
