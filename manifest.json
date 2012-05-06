@@ -13,7 +13,6 @@
 				"128": "assets/images/icon128x128.png" 
 			},
 	"background": {
-		"page": "background/background.html",
 		"script": ["background/background.js"]
 	},
 	"options_page": "opts/options.html",
@@ -22,7 +21,6 @@
 		"https://*/*",
 		"tabs",
 		"background",
-		//"cookies",
 		"notifications"
  	],
 	"content_scripts": [
