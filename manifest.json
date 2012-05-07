@@ -22,7 +22,6 @@
 		"https://*/*",
 		"tabs",
 		"background",
-		//"cookies",
 		"notifications"
  	],
 	"content_scripts": [

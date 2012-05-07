@@ -16,6 +16,17 @@ chrome.extension.onRequest.addListener(
 				break;
 		}
 });
+
+//follow blur/focus events
+prefs.windowFocused = true;
+window.addEventListener('focus', function() {
+  prefs.windowFocused = true;
+});
+
+window.addEventListener('blur', function() {
+  prefs.windowFocused = false;
+});
+
 main();
 function main() {
 
@@ -47,40 +58,33 @@ function main() {
  * Check incomming messages to see if there are actions we need to take
  */
 function messageHandler(msg) {
-	//console.log(prefs)
+	//console.log(msg)
+
 	switch (msg.type) {
 		case 'buffer_msg':
+		case 'buffer_me_msg':
+			//exit if the tab isnt hidden. We only alert when its not visable
+			if (channelFocused(msg.chan)) {
+				return true;
+			}
 			if (msg.highlight && prefs.playalert) {
 				prefs.beep.play();
 			} else if (matchedChannel(msg.chan)) {
-				var icon = 'https://irccloud.com/static/48x48.png';
-				var title = 'From: ' 
-							+ msg.from
-							+ ' in '
-							+ msg.chan;
-				
-				var notification = webkitNotifications.createNotification(
-					 icon,
-					 title,
-					 msg.msg
-				);
-				
-				//hide after 15 seconds
-				notification.ondisplay = function() {
-					setTimeout(function () {
-						notification.cancel();
-					}, 5000);
-				};
-				
-				notification.onclick = function() {
-					notification.cancel();
-					window.focus();
-					//TODO: focus irc channel
+				if (msg.type == 'buffer_msg') {
+					popUp(title = 'From: ' 
+								+ msg.from
+								+ ' in '
+								+ msg.chan, msg.msg, msg.chan);
+				} else {
+					popUp(title = 'In '
+								+ msg.chan + ':',
+								msg.from + ' ' + msg.msg,
+								msg.chan);
 				}
+				
 				if (prefs.playalert) {
 					prefs.beep.play();
 				}
-				notification.show();
 			}
 			break;
 	}
@@ -105,4 +109,48 @@ function getSettings() {
 	});	
 }
 
+/**
+ * Show popup
+ */
+function popUp(title, msg, chan) {
+	var icon = 'https://irccloud.com/static/48x48.png';
+	
+	var notification = webkitNotifications.createNotification(
+		 icon,
+		 title,
+		 msg
+	);
+	
+	//hide after 15 seconds
+	notification.ondisplay = function() {
+		setTimeout(function () {
+			notification.cancel();
+		}, 15000);
+	};
+	
+	notification.onclick = function() {
+		notification.cancel();
+		window.focus();
+		var parser	= document.createElement('a');
+		parser.href	= window.location.href;
+		hash		= parser.hash.split('/');
+		hash[2]		= encodeURI(chan);
+		window.location.href = hash.join('/');
+	}
 
+	notification.show();
+}
+
+/**
+ * Checks if a channel window is currently in focus
+ */
+function channelFocused(chan) {
+	if(document.webkitHidden || !prefs.windowFocused) {
+		return false;
+	}
+	
+	var parser = document.createElement('a');
+	parser.href = window.location.href;
+
+	return decodeURIComponent(parser.hash.split('/')[2]) == chan;
+}

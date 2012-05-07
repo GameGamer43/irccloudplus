@@ -11,10 +11,11 @@ $(document).ready(function(){
 				localStorage[$(this).attr('name')] = JSON.stringify(val);
 				break;
 		}
+		//find all irccloud pages and notify them of the setting updates
 		chrome.tabs.query({url: 'https://irccloud.com/'}, function (tabs){
 			$.each(tabs, function(idx, tab) {
 				chrome.tabs.sendRequest(tab.id, {action: 'loadSettings'});
-			})
+			});
 		});
 	});
 });
