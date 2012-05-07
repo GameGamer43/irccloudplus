@@ -1,6 +1,6 @@
 {
 	"name": "irccloud+",
-	"version": "0.2",
+	"version": "0.3",
 	"manifest_version": 2,
 	"description": "Irccloud companion and helper",
 	"browser_action": {
@@ -13,6 +13,7 @@
 				"128": "assets/images/icon128x128.png" 
 			},
 	"background": {
+		"page": "background/background.html",
 		"script": ["background/background.js"]
 	},
 	"options_page": "opts/options.html",
