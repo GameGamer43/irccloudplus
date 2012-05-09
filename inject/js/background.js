@@ -151,6 +151,7 @@ function channelFocused(chan) {
 	
 	var parser = document.createElement('a');
 	parser.href = window.location.href;
-
-	return decodeURIComponent(parser.hash.split('/')[2]) == chan;
+	var FocusedChan = parser.hash.split('/');
+	
+	return decodeURIComponent(FocusedChan[FocusedChan.length - 1]) == chan;
 }
